@@ -1,15 +1,20 @@
 <template>
   <div>
     <h2>Try to be in time!</h2>
+    <router-link class='back' to = '/'>Назад</router-link>
     <AddTodo 
       v-on:add-todo='addTodo'
     />
-    <router-link class='back' to = '/'>Назад</router-link>
+    <select v-model='filter'>
+      <option value="all">All</option>
+      <option value="completed">Completed</option>
+      <option value="not-completed">Not completed</option>
+    </select>
     <hr>
     <Loader v-if='loading' />
     <TodoList
-      v-else-if='todos.length'
-      v-bind:todos='todos'
+      v-else-if='filteredTodos.length'
+      v-bind:todos='filteredTodos'
       v-on:remove-todo='removeTodo'
     />
     <p class='no-todos' v-else>No Todos :)</p>
@@ -27,7 +32,29 @@ export default {
     return {
       todos: [],
       loading: true,
+      filter: 'all',
     }
+  },
+  computed: {
+    filteredTodos() {
+      if (this.filter === 'all') {
+        return this.todos
+      }
+
+      if (this.filter === 'completed') {
+        return this.todos.filter(todo => todo.completed)
+      }
+
+      if (this.filter === 'not-completed') {
+        return this.todos.filter(todo => !todo.completed)
+      }     
+      return 0 
+    },
+  },
+  watch: {
+    todos(value) {
+      console.log(value)
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -48,9 +75,8 @@ export default {
     },
     addTodo(todo) {
       this.todos.push(todo)
-      console.log('111');
     }
-  }
+  },
 }
 </script>
 
@@ -68,6 +94,11 @@ export default {
 .no-todos {
   font-size: 24px;
 
+}
+select {
+  display: block;
+  width: 200px;
+  margin: 10px auto;
 }
 </style>
 

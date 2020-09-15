@@ -7,7 +7,7 @@
     </span>
     <span v-bind:class='{done: todo.completed}'>
       <strong> {{index + 1}} </strong>
-      {{todo.title}}
+      {{todo.title | uppercase}}
     </span>
     <button 
       v-on:click='$emit("remove-todo", todo.id)'
@@ -24,6 +24,11 @@ export default {
     },
     index: Number,
   },
+  filters: {
+    uppercase(value) {
+      return value.toUpperCase()
+    }
+  }
 }
 </script>
 
