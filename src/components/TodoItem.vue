@@ -1,11 +1,12 @@
 <template>
   <li>
     <span>
-      <input type='checkbox' 
-        v-on:change='todo.completed = !todo.completed'
+      <input type='checkbox'
+        v-on:change='changeStatus'
+        v-model='checked'
       />
     </span>
-    <span v-bind:class='{done: todo.completed}'>
+    <span v-bind:class='{done: todo.completed}' >
       <strong> {{index + 1}} </strong>
       {{todo.title | uppercase}}
     </span>
@@ -17,6 +18,16 @@
 
 <script>
 export default {
+  data() {
+    return {
+      checked: false,
+    }
+  },
+  mounted() {
+    if(this.todo.completed) {
+      this.checked = true;
+    }
+  },
   props: {
     todo: {
       type: Object,
@@ -26,7 +37,13 @@ export default {
   },
   filters: {
     uppercase(value) {
-      return value.toUpperCase()
+      return value.toUpperCase();
+    }
+  },
+  methods: {
+    changeStatus() {
+      this.todo.completed = !this.todo.completed
+      console.log(this.todo.completed);
     }
   }
 }
@@ -47,6 +64,6 @@ export default {
   }
 
   .done {
-    text-decoration: line-through 2px red;
+    text-decoration: line-through #FF0000;
   }
 </style>

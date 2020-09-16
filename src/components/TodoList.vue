@@ -5,7 +5,7 @@
         v-for='(todo, id) of todos' :key='todo.id'
         v-bind:index='id'
         v-bind:todo='todo'
-        v-on:remove-todo='removeTodo'
+        v-on:remove-todo="$emit('remove-todo', todo.id)"
       />
     </ul>
   </div>
@@ -19,9 +19,9 @@ export default {
     TodoItem,
   },
   methods: {
-    removeTodo(id) {
-      this.$emit('remove-todo', id)
-    }
+    // removeTodo(id) {
+    //   this.$emit('remove-todo', id)
+    // }
   }
 }
 </script>
